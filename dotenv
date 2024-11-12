@@ -1,0 +1,3 @@
+# Rename to .env for use with Dockerfile
+USER=`id -u`
+GROUP=`id -g`
