@@ -1,5 +1,9 @@
 FROM golang:1.23-bookworm AS builder
 
+# Arguments either from --args or from docker-compose.yml args:
+ARG USER
+ARG GROUP
+
 ENV GOFLAGS="-mod=readonly"
 
 RUN apt-get update && apt-get -y upgrade && rm -rf /var/lib/apt/lists/*
@@ -62,6 +66,6 @@ RUN sed -i 's|"users_base_dir": "",|"users_base_dir": "/srv/sftpgo/data",|' /etc
 RUN chown -R sftpgo:sftpgo /etc/sftpgo /srv/sftpgo && chown sftpgo:sftpgo /var/lib/sftpgo && chmod 700 /srv/sftpgo/backups
 
 WORKDIR /var/lib/sftpgo
-USER 1000:1000
+USER $USER:$GROUP
 
 CMD ["sftpgo", "serve"]
